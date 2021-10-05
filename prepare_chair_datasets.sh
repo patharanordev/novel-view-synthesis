@@ -14,8 +14,8 @@ mkdir -p "./${OBJ_CLS}_checkpoint"
 # -------------------------------------------------
 # Download datasets:
 # "chair" 15GB
-gdown --id 1Ab_r96nwtIRZ5fhjzeL9ahCaKo-VWAVR
-unzip data_$OBJ_CLS.hdf5
+gdown --id 1Ab_r96nwtIRZ5fhjzeL9ahCaKo-VWAVR && \
+unzip data_$OBJ_CLS.zip && \
 mv data_$OBJ_CLS.hdf5 "./datasets/shapenet/data_$OBJ_CLS.hdf5"
 
 # For "car" around 150GB
