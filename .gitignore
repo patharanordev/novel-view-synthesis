@@ -142,3 +142,4 @@ cython_debug/
 *_checkpoint
 !lib
 output
+datasets/shapenet/*.zip
