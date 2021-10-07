@@ -41,6 +41,8 @@ class Evaler(object):
 
         tf.set_random_seed(123)
 
+        # TODO: Try to config GPU number 0
+        # Ref. https://liyin2015.medium.com/tensorflow-cpus-and-gpus-configuration-9c223436d4ef
         session_config = tf.ConfigProto(
             allow_soft_placement=True,
             gpu_options=tf.GPUOptions(allow_growth=True),
