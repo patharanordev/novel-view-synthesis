@@ -115,7 +115,7 @@ def argparser(is_train=True):
 
     config = parser.parse_args()
 
-    if config.dataset in ['car', 'chair']:
+    if config.dataset in ['car', 'chair', 'product']:
         config.dataset_type = 'object'
         import datasets.object_loader as dataset
     elif config.dataset in ['kitti', 'synthia']:
