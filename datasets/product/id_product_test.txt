@@ -1,0 +1,5 @@
+koakae_0_30
+koakae_0_150
+koakae_30_90
+koakae_90_90
+koakae_150_150

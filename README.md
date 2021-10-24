@@ -1,11 +1,50 @@
+# **Novel View Synthesis**
+
+## **Preparing dataset**
+
+Please refer to `~/novel-view-synthesis/datasets/product/images` and following file naming rule below:
+
+![camera-orbit](./asset/camera-orbit.png)
+
+ - `{PRODUCT_NAME}_{theta}_{phi}`.png
+ - Allow image file extend : `png`, `jpeg` or `jpg`
+## **Packing dataset into hdf5 file format**
+
+Require:
+ - [x] Python2.7
+ - [x] virtualenv
+
+```bash
+$ cd ~/novel-view-synthesis/datasets/generate
+$ virtualenv env --python=python2.7.16
+(env) $ source env/bin/activate
+(env) $ pip2.7 install -r requirements.txt
+(env) $ python2.7 pack-hdf5.py
+```
+
+## **Explore dataset from hdf5 package**
+
+Require:
+ - [x] Python3
+
+```bash
+$ cd ~/novel-view-synthesis/test/explore
+$ python3 venv -m env
+(env) $ source env/bin/activate
+(env) $ pip3 install -r requirements.txt
+(env) $ python3 explore-dataset.py
+```
+
+---
+
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/multi-view-to-novel-view-synthesizing-novel-1/novel-view-synthesis-kitti-novel-view)](https://paperswithcode.com/sota/novel-view-synthesis-kitti-novel-view?p=multi-view-to-novel-view-synthesizing-novel-1)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/multi-view-to-novel-view-synthesizing-novel-1/novel-view-synthesis-shapenet-car)](https://paperswithcode.com/sota/novel-view-synthesis-shapenet-car?p=multi-view-to-novel-view-synthesizing-novel-1)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/multi-view-to-novel-view-synthesizing-novel-1/novel-view-synthesis-shapenet-chair)](https://paperswithcode.com/sota/novel-view-synthesis-shapenet-chair?p=multi-view-to-novel-view-synthesizing-novel-1)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/multi-view-to-novel-view-synthesizing-novel-1/novel-view-synthesis-synthia-novel-view)](https://paperswithcode.com/sota/novel-view-synthesis-synthia-novel-view?p=multi-view-to-novel-view-synthesizing-novel-1)
 
-# Multi-view to Novel view: <br/>Synthesizing Novel Views with Self-Learned Confidence 
+## Multi-view to Novel view: <br/>Synthesizing Novel Views with Self-Learned Confidence 
 
-## Descriptions
+### Descriptions
 This project is a TensorFlow implementation of [**Multi-view to Novel view: Synthesizing Novel Views with Self-Learned Confidence**](https://shaohua0116.github.io/Multiview2Novelview/), which is published in [ECCV 2018](https://eccv2018.org/). We provide codes, [datasets](https://github.com/shaohua0116/Multiview2Novelview#datasets), and [checkpoints](https://github.com/shaohua0116/Multiview2Novelview#checkpoints). 
 
 In this work, we address the task of **multi-view novel view synthesis**, where we are interested in synthesizing a target image with an arbitrary camera pose from given source images. An illustration of the task is as follows.
@@ -24,7 +63,7 @@ We evaluate our model on images rendered from 3D object models ([ShapeNet](https
 
 A simpler novel view synthesis codebase can be found at [**Novel View Synthesis in TensorFlow**](https://github.com/shaohua0116/NovelViewSynthesis-TensorFlow), where all the data loaders, as well as training/testing scripts, are well-configured, and you can just play with models.
 
-## Prerequisites
+### Prerequisites
 
 - Python 2.7
 - [Tensorflow 1.3.0](https://github.com/tensorflow/tensorflow/tree/r1.0)
@@ -34,11 +73,11 @@ A simpler novel view synthesis codebase can be found at [**Novel View Synthesis 
 - [imageio](https://pypi.org/project/imageio/)
 - [six](https://pypi.org/project/six/)
 
-## Datasets
+### Datasets
 
 All datasets are stored as HDF5 files, and the links are as follows. Each data point (HDF5 group) contains an image and its camera pose.
 
-### ShapeNet
+#### ShapeNet
 <p align="center">
     <img src="./asset/shapenet_example.gif" width="800"/>
 </p>
@@ -48,7 +87,7 @@ All datasets are stored as HDF5 files, and the links are as follows. Each data p
     - [chair](https://drive.google.com/open?id=1-IbmdJqi37JozGuDJ42IzOFG_ZNAksni) (14GB) 
 - Put the file to this directory `./datasets/shapenet`.
 
-### KITTI
+#### KITTI
 <p align="center">
     <img src="./asset/kitti_example.gif" width="800"/>
 </p>
@@ -56,7 +95,7 @@ All datasets are stored as HDF5 files, and the links are as follows. Each data p
 - Download from [here](https://drive.google.com/open?id=1LT3WoHxdCycu4jTxCGc1vGYpdRWridFH) (4.3GB) 
 - Put the file to this directory `./datasets/kitti`.
 
-### Synthia
+#### Synthia
 <p align="center">
     <img src="./asset/synthia_example.gif" width="800"/>
 </p>
@@ -64,10 +103,10 @@ All datasets are stored as HDF5 files, and the links are as follows. Each data p
 - Download from [here](https://drive.google.com/open?id=1Fxv5r7oeG0PHgR42S5pHNvyl2pJN739H) (3.3GB) 
 - Put the file to this directory `./datasets/synthia`.
 
-## Usage
+### Usage
 After downloading the datasets, we can start to train models with the following command:
 
-### Train
+#### Train
 ```bash
 $ python trainer.py  --batch_size 8 --dataset car --num_input 4
 ```
@@ -88,14 +127,14 @@ $ python trainer.py  --batch_size 8 --dataset car --num_input 4
     - GAN
         - --gan\_type: the type of GAN losses such as LS-GAN, WGAN, etc
 
-### Interpret TensorBoard
+#### Interpret TensorBoard
 Launch Tensorboard and go to the specified port, you can see differernt losses in the **scalars** tab and plotted images in the **images** tab. The plotted images could be interpreted as follows.
 
 <p align="center">
     <img src="./asset/TB.jpg" width="1024"/>
 </p>
 
-### Test
+#### Test
 We can also evaluate trained models or the checkpoints provided by the authors with the following command:
 ```bash
 $ python evaler.py --dataset car --data_id_list ./testing_tuple_lists/id_car_random_elevation.txt [--train_dir /path/to/the/training/dir/ OR --checkpoint /path/to/the/trained/model] --loss True --write_summary True --summary_file log_car.txt --plot_image True --output_dir img_car
@@ -112,35 +151,35 @@ $ python evaler.py --dataset car --data_id_list ./testing_tuple_lists/id_car_ran
         - --summary_file: the path to the summary file
         - --output_dir: the output dir of plotted images
 
-## Result
+### Result
 
-### ShapeNet Cars
+#### ShapeNet Cars
 <p align="center">
     <img src="https://shaohua0116.github.io/Multiview2Novelview/img/results/car.jpg" width="640"/>
 </p>
 
 [More results](https://shaohua0116.github.io/Multiview2Novelview/results/car_sampled/car_results_1k.html) for ShapeNet cars (1k randomly samlped results from all 10k testing data)
 
-### ShapeNet Chairs
+#### ShapeNet Chairs
 <p align="center">
     <img src="https://shaohua0116.github.io/Multiview2Novelview/img/results/chair.jpg" width="640"/>
 </p>
 
 [More results](https://shaohua0116.github.io/Multiview2Novelview/results/car_sampled/car_results_1k.html) for ShapeNet cars (1k randomly samlped results from all 10k testing data)
 
-### Scenes: KITTI and Synthia
+#### Scenes: KITTI and Synthia
 <p align="center">
     <img src="https://shaohua0116.github.io/Multiview2Novelview/img/results/scene.jpg" width="640"/>
 </p>
 
-## Checkpoints
+### Checkpoints
 We provide checkpoints and evaluation report files of our models for all eooxperiments.
 - [ShapeNet Cars](https://drive.google.com/drive/folders/1speUFwZsKBbXTmuD-vvckkYsbbakTU0E?usp=sharing)
 - [ShapeNet Chairs](https://drive.google.com/drive/folders/1M7jZxWd91BiiqP9KchAvkMy_jdeVjoeO?usp=sharing)
 - [KITTI](https://drive.google.com/drive/folders/1hg9J1PAj2shICEra7IWRTjl3Ud4D9aX7?usp=sharing)
 - [Synthia](https://drive.google.com/drive/folders/1AuU0DP8IqrOfRQlooimuvorM2g1QM2Iz?usp=sharing)
 
-## Related work
+### Related work
 - \[L_1\] [Multi-view 3D Models from Single Images with a Convolutional Network](https://arxiv.org/abs/1511.06702) in CVPR 2016
 - \[Appearance Flow\][View Synthesis by Appearance Flow](https://arxiv.org/abs/1605.03557) in ECCV 2016
 - \[TVSN\] [Transformation-Grounded Image Generation Network for Novel 3D View Synthesis](https://arxiv.org/abs/1703.02921) in CVPR 2017
@@ -149,7 +188,7 @@ We provide checkpoints and evaluation report files of our models for all eooxper
 - [DeepStereo: Learning to Predict New Views From the World's Imagery](https://arxiv.org/abs/1506.06825) in CVPR 2016
 - [Learning-Based View Synthesis for Light Field Cameras](http://cseweb.ucsd.edu/~viscomp/projects/LF/papers/SIGASIA16/) in SIGGRAPH Asia 2016
 
-## Cite the paper
+### Cite the paper
 If you find this useful, please cite
 ```
 @inproceedings{sun2018multiview,
@@ -161,5 +200,5 @@ If you find this useful, please cite
 
 ```
 
-## Authors
+### Authors
 [Shao-Hua Sun](http://shaohua0116.github.io/), [Minyoung Huh](http://minyounghuh.com/), [Yuan-Hong Liao](https://andrewliao11.github.io/), [Ning Zhang](https://people.eecs.berkeley.edu/~nzhang/), and [Joseph J. Lim](http://www-bcf.usc.edu/~limjj/)
