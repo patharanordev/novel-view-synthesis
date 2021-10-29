@@ -17,7 +17,7 @@ rs = np.random.RandomState(123)
 class Dataset(object):
 
     def __init__(self, ids, n, object_class, name='default',
-                 max_examples=None, is_train=True):
+                 max_examples=None, is_train=True, specific_framework=None):
         self._ids = list(ids)
         self.name = name
         self.is_train = is_train
@@ -26,10 +26,14 @@ class Dataset(object):
 
         if max_examples is not None:
             self._ids = self._ids[:max_examples]
+        
+        framework = specific_framework
+        if framework == None:
+            framework = object_class
 
         filename = 'data_{}.hdf5'.format(object_class)
 
-        file = osp.join(__PATH__, filename)
+        file = osp.join('./datasets/{}'.format(framework), filename)
         log.info("Reading %s ...", file)
 
         self.data = h5py.File(file, 'r')
@@ -48,10 +52,14 @@ class Dataset(object):
         np.random.shuffle(idx)
         idx = idx[:self.n]
         ang = (idx + pose[0]).astype(np.int32)
+        # print('idx: {}'.format(idx))
+        # print('pose[0]: {}'.format(pose[0]))
+        # print('angle came from (idx + pose[0])... :')
         for a in ang:
             id_base = id.split('_')[0]
             h = id.split('_')[-1]
             id_target = '_'.join([id_base, str(a % 36), str(h)])
+            # print('angle {} mod 36 : {}'.format(a, str(a % 36)))
             image_tmp = 1 - self.data[id_target]['image'].value/255.*2
             pose_tmp = np.expand_dims(self.data[id_target]['pose'].value, -1)
             image = np.concatenate((image, image_tmp), axis=-1)
@@ -99,23 +107,28 @@ class Dataset(object):
         )
 
 
-def create_default_splits(n, object_class, is_train=True):
-    ids_train, ids_test = all_ids(object_class)
+def create_default_splits(n, object_class, is_train=True, specific_framework=None):
+    ids_train, ids_test = all_ids(object_class, specific_framework)
 
     dataset_train = Dataset(ids_train, n, object_class, 
-                            name='train', is_train=is_train)
+                            name='train', is_train=is_train, specific_framework=specific_framework)
     dataset_test = Dataset(ids_test, n, object_class,
-                           name='test', is_train=is_train)
+                           name='test', is_train=is_train, specific_framework=specific_framework)
     return dataset_train, dataset_test
 
 
-def all_ids(object_class):
+def all_ids(object_class, specific_framework=None):
 
-    with open(osp.join(__PATH__, 'id_{}_train.txt'.format(object_class)), 'r') as fp:
+    framework = specific_framework
+
+    if framework == None:
+        framework = object_class
+
+    with open(osp.join('./datasets/{}'.format(framework), 'id_{}_train.txt'.format(object_class)), 'r') as fp:
         ids_train = [s.strip() for s in fp.readlines() if s]
     rs.shuffle(ids_train)
 
-    with open(osp.join(__PATH__, 'id_{}_test.txt'.format(object_class)), 'r') as fp:
+    with open(osp.join('./datasets/{}'.format(framework), 'id_{}_test.txt'.format(object_class)), 'r') as fp:
         ids_test = [s.strip() for s in fp.readlines() if s]
     rs.shuffle(ids_test)
 

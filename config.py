@@ -17,7 +17,7 @@ def argparser(is_train=True):
     parser.add_argument('--prefix', type=str, default='default',
                         help='a nickname for the training')
     parser.add_argument('--dataset', type=str, default='car', choices=[
-        'car', 'chair', 'kitti', 'synthia'],
+        'car', 'chair', 'product', 'kitti', 'synthia'],
         help='you can add your own dataset here')
     parser.add_argument('--num_input', type=int, default=2,
                         help='the number of source images')
@@ -114,16 +114,30 @@ def argparser(is_train=True):
     # }}}
 
     config = parser.parse_args()
+    framework = ''
 
     if config.dataset in ['car', 'chair', 'product']:
         config.dataset_type = 'object'
+        if config.dataset == 'product':
+            framework = 'product'
+        else:
+            framework = 'shapenet'
         import datasets.object_loader as dataset
     elif config.dataset in ['kitti', 'synthia']:
         config.dataset_type = 'scene'
+        framework = config.dataset
         import datasets.scene_loader as dataset
 
-    dataset_train, dataset_test = \
-        dataset.create_default_splits(config.num_input, config.dataset)
+    print('framework:{}'.format(framework))
+
+    if config.dataset_type == 'object':
+        print('dataset_type:{}'.format(config.dataset_type))
+        dataset_train, dataset_test = \
+            dataset.create_default_splits(config.num_input, config.dataset, is_train=True, specific_framework=framework)
+    else:
+        dataset_train, dataset_test = \
+            dataset.create_default_splits(config.num_input, config.dataset)
+
     image, pose = dataset_train.get_data(dataset_train.ids[0])
 
     config.data_info = np.concatenate([np.asarray(image.shape), np.asarray(pose.shape)])
