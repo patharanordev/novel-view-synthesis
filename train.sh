@@ -16,7 +16,14 @@
 # GAN
 # --gan_type: the type of GAN losses such as LS-GAN, WGAN, etc
 
+# Note from researcher:
+# - 200k still has low GAN loss
+# - 300k no GAN loss (let's try)
+# - To continue training, we need to add "--checkpoint" option but not for the first training
+
 python2.7 trainer.py \
+--checkpoint ./train_dir/product-default-bs_8_lr_flow_0.0001_pixel_5e-05_d_0.0001-num_input-4-20211101-083516/model-1 \
 --batch_size 8 \
 --dataset product \
---num_input 4
+--num_input 4 \
+--max_steps 300000

@@ -15,7 +15,7 @@
 python2.7 predict.py \
 --dataset product \
 --data_id_list ./testing_tuple_lists/id_product_random_elevation.txt \
---checkpoint ./train_dir/product-default-bs_8_lr_flow_0.0001_pixel_5e-05_d_0.0001-num_input-4-20211028-094408/model-1 \
+--checkpoint ./train_dir/product-default-bs_8_lr_flow_0.0001_pixel_5e-05_d_0.0001-num_input-4-20211030-194111/model-1 \
 --batch_size 1 \
 --num_input 4 \
 --loss True \
